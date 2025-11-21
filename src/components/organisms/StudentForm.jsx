@@ -199,11 +199,11 @@ const StudentForm = ({
           Cancel
         </Button>
         
-        <Button
+<Button
           type="submit"
           loading={loading}
         >
-          {student ? "Update Student" : "Add Student"}
+          {student ? "Save Changes" : "Save Student"}
         </Button>
       </div>
     </motion.form>
