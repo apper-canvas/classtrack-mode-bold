@@ -41,11 +41,11 @@ const Attendance = () => {
     try {
       if (attendanceId) {
         // Update existing record
-        await attendanceService.update(attendanceId, attendanceData);
+await attendanceService.update(attendanceId, attendanceData);
         toast.success("Attendance updated successfully!");
       } else {
         // Create new record
-        await attendanceService.create(attendanceData);
+await attendanceService.create(attendanceData);
         toast.success("Attendance marked successfully!");
       }
       

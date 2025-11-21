@@ -64,7 +64,7 @@ const Students = () => {
     try {
       setFormLoading(true);
       
-      if (modalMode === "add") {
+if (modalMode === "add") {
         await studentService.create(formData);
         toast.success("Student added successfully!");
       } else if (modalMode === "edit") {
@@ -171,44 +171,44 @@ const Students = () => {
           <div className="space-y-6">
             <div className="flex items-center space-x-4">
               <div className="w-16 h-16 bg-gradient-to-br from-primary-500 to-primary-600 rounded-full flex items-center justify-center">
-                <span className="text-lg font-bold text-white">
-                  {selectedStudent.firstName[0]}{selectedStudent.lastName[0]}
+<span className="text-lg font-bold text-white">
+                  {selectedStudent.first_name_c?.[0]}{selectedStudent.last_name_c?.[0]}
                 </span>
               </div>
               <div>
                 <h3 className="text-xl font-semibold text-slate-900">
-                  {selectedStudent.firstName} {selectedStudent.lastName}
+                  {selectedStudent.first_name_c} {selectedStudent.last_name_c}
                 </h3>
-                <p className="text-slate-600">{selectedStudent.email}</p>
+                <p className="text-slate-600">{selectedStudent.email_c}</p>
               </div>
             </div>
 
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <label className="block text-sm font-medium text-slate-700">Student ID</label>
-                <p className="mt-1 text-sm text-slate-900">{selectedStudent.studentId}</p>
+                <p className="mt-1 text-sm text-slate-900">{selectedStudent.student_id_c}</p>
               </div>
               <div>
                 <label className="block text-sm font-medium text-slate-700">Phone</label>
-                <p className="mt-1 text-sm text-slate-900">{selectedStudent.phone || "Not provided"}</p>
+                <p className="mt-1 text-sm text-slate-900">{selectedStudent.phone_c || "Not provided"}</p>
               </div>
               <div>
                 <label className="block text-sm font-medium text-slate-700">Grade Level</label>
-                <p className="mt-1 text-sm text-slate-900">Grade {selectedStudent.gradeLevel}</p>
+                <p className="mt-1 text-sm text-slate-900">Grade {selectedStudent.grade_level_c}</p>
               </div>
               <div>
                 <label className="block text-sm font-medium text-slate-700">Section</label>
-                <p className="mt-1 text-sm text-slate-900">{selectedStudent.section}</p>
+                <p className="mt-1 text-sm text-slate-900">{selectedStudent.section_c}</p>
               </div>
               <div>
                 <label className="block text-sm font-medium text-slate-700">Enrollment Date</label>
                 <p className="mt-1 text-sm text-slate-900">
-                  {new Date(selectedStudent.enrollmentDate).toLocaleDateString()}
+                  {new Date(selectedStudent.enrollment_date_c).toLocaleDateString()}
                 </p>
               </div>
               <div>
                 <label className="block text-sm font-medium text-slate-700">Status</label>
-                <p className="mt-1 text-sm text-slate-900 capitalize">{selectedStudent.status}</p>
+                <p className="mt-1 text-sm text-slate-900 capitalize">{selectedStudent.status_c}</p>
               </div>
             </div>
 
@@ -240,8 +240,8 @@ const Students = () => {
               <h3 className="text-lg font-semibold text-slate-900">
                 Are you sure you want to delete this student?
               </h3>
-              <p className="text-slate-600">
-                This will permanently delete <strong>{selectedStudent.firstName} {selectedStudent.lastName}</strong> and all associated records. This action cannot be undone.
+<p className="text-slate-600">
+                This will permanently delete <strong>{selectedStudent.first_name_c} {selectedStudent.last_name_c}</strong> and all associated records. This action cannot be undone.
               </p>
             </div>
 

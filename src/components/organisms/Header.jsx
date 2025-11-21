@@ -3,11 +3,14 @@ import { motion } from "framer-motion";
 import { useLocation, useNavigate } from "react-router-dom";
 import Button from "@/components/atoms/Button";
 import ApperIcon from "@/components/ApperIcon";
+import { useAuth } from "@/layouts/Root";
+import { useSelector } from "react-redux";
 
 const Header = ({ onMenuToggle }) => {
   const location = useLocation();
   const navigate = useNavigate();
-  
+  const { logout } = useAuth();
+  const { user } = useSelector(state => state.user);
   const getPageTitle = (pathname) => {
     switch (pathname) {
       case "/":
@@ -79,7 +82,7 @@ const Header = ({ onMenuToggle }) => {
           </div>
         </div>
 
-        <div className="flex items-center space-x-3">
+<div className="flex items-center space-x-3">
           {/* Quick actions */}
           <Button
             size="sm"
@@ -90,6 +93,24 @@ const Header = ({ onMenuToggle }) => {
           >
             Add Student
           </Button>
+          
+          {/* User info and logout */}
+          {user && (
+            <div className="flex items-center space-x-2">
+              <span className="text-sm text-slate-600 hidden md:inline">
+                {user.firstName} {user.lastName}
+              </span>
+              <Button
+                size="sm"
+                variant="ghost"
+                icon="LogOut"
+                onClick={logout}
+                className="text-slate-600 hover:text-red-600"
+              >
+                <span className="hidden sm:inline ml-1">Logout</span>
+              </Button>
+            </div>
+          )}
           
           {/* Notifications */}
           <Button

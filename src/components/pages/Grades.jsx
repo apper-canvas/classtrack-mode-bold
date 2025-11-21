@@ -1,20 +1,20 @@
-import { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { toast } from "react-toastify";
 import { format } from "date-fns";
-import GradeForm from "@/components/organisms/GradeForm";
-import SearchBar from "@/components/molecules/SearchBar";
-import Modal from "@/components/atoms/Modal";
-import Button from "@/components/atoms/Button";
-import Select from "@/components/atoms/Select";
-import Badge from "@/components/atoms/Badge";
-import Card from "@/components/atoms/Card";
+import { studentService } from "@/services/api/studentService";
+import { gradeService } from "@/services/api/gradeService";
+import ApperIcon from "@/components/ApperIcon";
 import Loading from "@/components/ui/Loading";
 import ErrorView from "@/components/ui/ErrorView";
 import Empty from "@/components/ui/Empty";
-import ApperIcon from "@/components/ApperIcon";
-import { studentService } from "@/services/api/studentService";
-import { gradeService } from "@/services/api/gradeService";
+import Modal from "@/components/atoms/Modal";
+import Select from "@/components/atoms/Select";
+import Button from "@/components/atoms/Button";
+import Card from "@/components/atoms/Card";
+import Badge from "@/components/atoms/Badge";
+import GradeForm from "@/components/organisms/GradeForm";
+import SearchBar from "@/components/molecules/SearchBar";
 
 const Grades = () => {
   const [students, setStudents] = useState([]);
@@ -58,45 +58,43 @@ const Grades = () => {
 
   // Get student name by ID
   const getStudentName = (studentId) => {
-    const student = students.find(s => s.Id.toString() === studentId);
-    return student ? `${student.firstName} ${student.lastName}` : "Unknown Student";
+const student = students.find(s => s.Id.toString() === studentId);
+    return student ? `${student.first_name_c} ${student.last_name_c}` : "Unknown Student";
   };
 
   // Get student by ID
-  const getStudent = (studentId) => {
+const getStudent = (studentId) => {
     return students.find(s => s.Id.toString() === studentId);
   };
 
-  // Filter grades
-  const filteredGrades = grades.filter(grade => {
-    const student = getStudent(grade.studentId);
-    const studentName = student ? `${student.firstName} ${student.lastName}` : "";
-    const studentId = student ? student.studentId : "";
+const filteredGrades = grades.filter(grade => {
+    const searchLower = searchQuery.toLowerCase();
+    const student = getStudent(grade.student_id_c?.Id || grade.student_id_c);
+    const studentName = student ? `${student.first_name_c} ${student.last_name_c}` : "";
+    const studentId = student ? student.student_id_c : "";
+const matchesSearch = searchQuery === "" ||
+      studentName.toLowerCase().includes(searchLower) ||
+      studentId.toLowerCase().includes(searchLower) ||
+      grade.subject_c?.toLowerCase().includes(searchLower);
     
-    const matchesSearch = searchQuery === "" ||
-      studentName.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      studentId.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      grade.subject.toLowerCase().includes(searchQuery.toLowerCase());
-    
-    const matchesStudent = filterStudent === "" || grade.studentId === filterStudent;
-    const matchesSubject = filterSubject === "" || grade.subject === filterSubject;
-    const matchesTerm = filterTerm === "" || grade.term === filterTerm;
-    
+    const matchesStudent = filterStudent === "" || (grade.student_id_c?.Id || grade.student_id_c) === parseInt(filterStudent);
+const matchesSubject = filterSubject === "" || grade.subject_c === filterSubject;
+    const matchesTerm = filterTerm === "" || grade.term_c === filterTerm;
     return matchesSearch && matchesStudent && matchesSubject && matchesTerm;
   });
 
   // Options for filters
-  const studentOptions = students.map(student => ({
+const studentOptions = students.map(student => ({
     value: student.Id.toString(),
-    label: `${student.firstName} ${student.lastName} (${student.studentId})`
+    label: `${student.first_name_c} ${student.last_name_c} (${student.student_id_c})`
   }));
 
-  const subjectOptions = [...new Set(grades.map(g => g.subject))].map(subject => ({
+const subjectOptions = [...new Set(grades.map(g => g.subject_c))].map(subject => ({
     value: subject,
     label: subject
   }));
 
-  const termOptions = [...new Set(grades.map(g => g.term))].map(term => ({
+const termOptions = [...new Set(grades.map(g => g.term_c))].map(term => ({
     value: term,
     label: term
   }));
@@ -166,7 +164,7 @@ const Grades = () => {
     setFormLoading(false);
   };
 
-  const getGradeColor = (score, maxScore) => {
+const getGradeColor = (score, maxScore) => {
     const percentage = (score / maxScore) * 100;
     if (percentage >= 90) return "success";
     if (percentage >= 80) return "primary";
@@ -293,17 +291,17 @@ const Grades = () => {
                 <div className="flex items-center justify-between">
                   <div className="flex items-center space-x-4">
                     <div className="w-12 h-12 bg-gradient-to-br from-primary-500 to-primary-600 rounded-full flex items-center justify-center">
-                      <span className="text-sm font-bold text-white">
-                        {getGradeLetter(grade.score, grade.maxScore)}
+<span className="text-sm font-bold text-white">
+                        {getGradeLetter(grade.score_c, grade.max_score_c)}
                       </span>
                     </div>
                     
                     <div>
                       <h3 className="font-semibold text-slate-900">
-                        {getStudentName(grade.studentId)}
+                        {getStudentName(grade.student_id_c?.Id || grade.student_id_c)}
                       </h3>
                       <p className="text-sm text-slate-500">
-                        {grade.subject} • {grade.type} • {grade.term}
+                        {grade.subject_c} • {grade.type_c} • {grade.term_c}
                       </p>
                       <p className="text-xs text-slate-400 mt-1">
                         {format(new Date(grade.date), "MMM dd, yyyy")}
@@ -313,11 +311,11 @@ const Grades = () => {
 
                   <div className="flex items-center space-x-4">
                     <div className="text-right">
-                      <div className="text-lg font-bold text-slate-900">
-                        {grade.score}/{grade.maxScore}
+<div className="text-lg font-bold text-slate-900">
+                        {grade.score_c}/{grade.max_score_c}
                       </div>
-                      <Badge variant={getGradeColor(grade.score, grade.maxScore)} size="sm">
-                        {((grade.score / grade.maxScore) * 100).toFixed(1)}%
+                      <Badge variant={getGradeColor(grade.score_c, grade.max_score_c)} size="sm">
+                        {((grade.score_c / grade.max_score_c) * 100).toFixed(1)}%
                       </Badge>
                     </div>
 
@@ -377,10 +375,10 @@ const Grades = () => {
               <h3 className="text-lg font-semibold text-slate-900">
                 Are you sure you want to delete this grade?
               </h3>
-              <div className="text-slate-600 space-y-2">
-                <p><strong>Student:</strong> {getStudentName(selectedGrade.studentId)}</p>
-                <p><strong>Subject:</strong> {selectedGrade.subject}</p>
-                <p><strong>Score:</strong> {selectedGrade.score}/{selectedGrade.maxScore}</p>
+<div className="text-slate-600 space-y-2">
+                <p><strong>Student:</strong> {getStudentName(selectedGrade.student_id_c?.Id || selectedGrade.student_id_c)}</p>
+                <p><strong>Subject:</strong> {selectedGrade.subject_c}</p>
+                <p><strong>Score:</strong> {selectedGrade.score_c}/{selectedGrade.max_score_c}</p>
                 <p className="text-sm text-red-600 mt-3">This action cannot be undone.</p>
               </div>
             </div>

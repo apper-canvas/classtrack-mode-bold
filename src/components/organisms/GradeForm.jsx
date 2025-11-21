@@ -12,14 +12,14 @@ const GradeForm = ({
   onCancel, 
   loading = false 
 }) => {
-  const [formData, setFormData] = useState({
-    studentId: grade?.studentId || "",
-    subject: grade?.subject || "",
-    score: grade?.score || "",
-    maxScore: grade?.maxScore || "100",
-    date: grade?.date ? format(new Date(grade.date), "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd"),
-    type: grade?.type || "",
-    term: grade?.term || ""
+const [formData, setFormData] = useState({
+    student_id_c: grade?.student_id_c?.Id || grade?.student_id_c || "",
+    subject_c: grade?.subject_c || "",
+    score_c: grade?.score_c || "",
+    max_score_c: grade?.max_score_c || "100",
+    date_c: grade?.date_c ? format(new Date(grade.date_c), "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd"),
+    type_c: grade?.type_c || "",
+    term_c: grade?.term_c || ""
   });
 
   const [errors, setErrors] = useState({});
@@ -53,9 +53,9 @@ const GradeForm = ({
     { value: "Final", label: "Final" }
   ];
 
-  const studentOptions = students.map(student => ({
+const studentOptions = students.map(student => ({
     value: student.Id.toString(),
-    label: `${student.firstName} ${student.lastName} (${student.studentId})`
+    label: `${student.first_name_c} ${student.last_name_c} (${student.student_id_c})`
   }));
 
   const validateForm = () => {
@@ -99,11 +99,11 @@ const GradeForm = ({
     e.preventDefault();
     
     if (validateForm()) {
-      onSubmit({
+onSubmit({
         ...formData,
-        score: parseFloat(formData.score),
-        maxScore: parseFloat(formData.maxScore),
-        date: new Date(formData.date).toISOString()
+        score_c: parseFloat(formData.score_c),
+        max_score_c: parseFloat(formData.max_score_c),
+        date_c: new Date(formData.date_c).toISOString()
       });
     }
   };
@@ -132,10 +132,10 @@ const GradeForm = ({
         <div className="md:col-span-2">
           <Select
             label="Student"
-            value={formData.studentId}
-            onChange={(e) => handleChange("studentId", e.target.value)}
+value={formData.student_id_c}
+            onChange={(e) => handleChange("student_id_c", e.target.value)}
             options={studentOptions}
-            error={errors.studentId}
+            error={errors.student_id_c}
             placeholder="Select student"
           />
         </div>
@@ -206,8 +206,8 @@ const GradeForm = ({
         >
           <div className="text-center space-y-2">
             <h4 className="font-semibold text-primary-900">Score Preview</h4>
-            <div className="text-2xl font-bold text-primary-700">
-              {formData.score}/{formData.maxScore} ({percentage}%)
+<div className="text-2xl font-bold text-primary-700">
+              {formData.score_c}/{formData.max_score_c} ({percentage}%)
             </div>
             <p className="text-sm text-primary-600">
               Grade: {percentage >= 90 ? "A" : percentage >= 80 ? "B" : percentage >= 70 ? "C" : percentage >= 60 ? "D" : "F"}

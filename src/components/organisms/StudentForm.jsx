@@ -11,16 +11,16 @@ const StudentForm = ({
   onCancel, 
   loading = false 
 }) => {
-  const [formData, setFormData] = useState({
-    firstName: student?.firstName || "",
-    lastName: student?.lastName || "",
-    studentId: student?.studentId || "",
-    email: student?.email || "",
-    phone: student?.phone || "",
-    enrollmentDate: student?.enrollmentDate ? format(new Date(student.enrollmentDate), "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd"),
-    gradeLevel: student?.gradeLevel || "",
-    section: student?.section || "",
-    status: student?.status || "active"
+const [formData, setFormData] = useState({
+    first_name_c: student?.first_name_c || "",
+    last_name_c: student?.last_name_c || "",
+    student_id_c: student?.student_id_c || "",
+    email_c: student?.email_c || "",
+    phone_c: student?.phone_c || "",
+    enrollment_date_c: student?.enrollment_date_c ? format(new Date(student.enrollment_date_c), "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd"),
+    grade_level_c: student?.grade_level_c || "",
+    section_c: student?.section_c || "",
+    status_c: student?.status_c || "active"
   });
 
   const [errors, setErrors] = useState({});
@@ -90,9 +90,9 @@ const StudentForm = ({
     e.preventDefault();
     
     if (validateForm()) {
-      onSubmit({
+onSubmit({
         ...formData,
-        enrollmentDate: new Date(formData.enrollmentDate).toISOString()
+        enrollment_date_c: new Date(formData.enrollment_date_c).toISOString()
       });
     }
   };
@@ -115,75 +115,75 @@ const StudentForm = ({
     >
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <Input
-          label="First Name"
-          value={formData.firstName}
-          onChange={(e) => handleChange("firstName", e.target.value)}
-          error={errors.firstName}
+label="First Name"
+          value={formData.first_name_c}
+          onChange={(e) => handleChange("first_name_c", e.target.value)}
+          error={errors.first_name_c}
           placeholder="Enter first name"
         />
 
         <Input
           label="Last Name"
-          value={formData.lastName}
-          onChange={(e) => handleChange("lastName", e.target.value)}
-          error={errors.lastName}
+          value={formData.last_name_c}
+          onChange={(e) => handleChange("last_name_c", e.target.value)}
+          error={errors.last_name_c}
           placeholder="Enter last name"
         />
 
         <Input
           label="Student ID"
-          value={formData.studentId}
-          onChange={(e) => handleChange("studentId", e.target.value)}
-          error={errors.studentId}
+          value={formData.student_id_c}
+          onChange={(e) => handleChange("student_id_c", e.target.value)}
+          error={errors.student_id_c}
           placeholder="Enter student ID"
         />
 
         <Input
           label="Email"
           type="email"
-          value={formData.email}
-          onChange={(e) => handleChange("email", e.target.value)}
-          error={errors.email}
+          value={formData.email_c}
+          onChange={(e) => handleChange("email_c", e.target.value)}
+          error={errors.email_c}
           placeholder="Enter email address"
         />
 
         <Input
           label="Phone"
-          value={formData.phone}
-          onChange={(e) => handleChange("phone", e.target.value)}
+          value={formData.phone_c}
+          onChange={(e) => handleChange("phone_c", e.target.value)}
           placeholder="Enter phone number"
         />
 
         <Input
           label="Enrollment Date"
           type="date"
-          value={formData.enrollmentDate}
-          onChange={(e) => handleChange("enrollmentDate", e.target.value)}
+          value={formData.enrollment_date_c}
+          onChange={(e) => handleChange("enrollment_date_c", e.target.value)}
         />
 
         <Select
           label="Grade Level"
-          value={formData.gradeLevel}
-          onChange={(e) => handleChange("gradeLevel", e.target.value)}
+          value={formData.grade_level_c}
+          onChange={(e) => handleChange("grade_level_c", e.target.value)}
           options={gradeOptions}
-          error={errors.gradeLevel}
+          error={errors.grade_level_c}
           placeholder="Select grade level"
         />
 
         <Select
           label="Section"
-          value={formData.section}
-          onChange={(e) => handleChange("section", e.target.value)}
+          value={formData.section_c}
+          onChange={(e) => handleChange("section_c", e.target.value)}
           options={sectionOptions}
-          error={errors.section}
+          error={errors.section_c}
           placeholder="Select section"
         />
 
         <div className="md:col-span-2">
           <Select
             label="Status"
-            value={formData.status}
-            onChange={(e) => handleChange("status", e.target.value)}
+            value={formData.status_c}
+            onChange={(e) => handleChange("status_c", e.target.value)}
             options={statusOptions}
           />
         </div>

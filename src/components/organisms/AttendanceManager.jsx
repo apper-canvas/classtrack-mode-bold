@@ -18,9 +18,9 @@ const AttendanceManager = ({
   const [selectedStudent, setSelectedStudent] = useState("");
   const [bulkStatus, setBulkStatus] = useState("present");
 
-  const studentOptions = students.map(student => ({
+const studentOptions = students.map(student => ({
     value: student.Id.toString(),
-    label: `${student.firstName} ${student.lastName} (${student.studentId})`
+    label: `${student.first_name_c} ${student.last_name_c} (${student.student_id_c})`
   }));
 
   const statusOptions = [
@@ -33,20 +33,20 @@ const AttendanceManager = ({
   // Get attendance for selected date
   const getAttendanceForDate = (date) => {
     const dateStr = format(date, "yyyy-MM-dd");
-    return attendance.filter(record => 
-      format(new Date(record.date), "yyyy-MM-dd") === dateStr
+return attendance.filter(record => 
+      format(new Date(record.date_c), "yyyy-MM-dd") === dateStr
     );
   };
 
   // Get attendance summary for calendar
   const getAttendanceSummary = () => {
     const summary = {};
-    attendance.forEach(record => {
-      const dateStr = format(new Date(record.date), "yyyy-MM-dd");
+attendance.forEach(record => {
+      const dateStr = format(new Date(record.date_c), "yyyy-MM-dd");
       if (!summary[dateStr]) {
         summary[dateStr] = { present: 0, absent: 0, late: 0, excused: 0 };
       }
-      summary[dateStr][record.status]++;
+      summary[dateStr][record.status_c]++;
     });
     return summary;
   };
@@ -57,10 +57,10 @@ const AttendanceManager = ({
   // Get students with their attendance status for selected date
   const getStudentsWithAttendance = () => {
     return students.map(student => {
-      const record = todayAttendance.find(a => a.studentId === student.Id.toString());
+const record = todayAttendance.find(a => a.student_id_c?.Id === student.Id);
       return {
         ...student,
-        attendanceStatus: record?.status || null,
+        attendanceStatus: record?.status_c || null,
         attendanceId: record?.Id || null
       };
     });
@@ -71,21 +71,21 @@ const AttendanceManager = ({
   const handleMarkAttendance = (studentId, status) => {
     const student = studentsWithAttendance.find(s => s.Id.toString() === studentId);
     
-    if (student?.attendanceId) {
+if (student?.attendanceId) {
       // Update existing record
       onMarkAttendance(student.attendanceId, {
-        studentId,
-        date: selectedDate.toISOString(),
-        status,
-        notes: ""
+        student_id_c: studentId,
+        date_c: selectedDate.toISOString(),
+        status_c: status,
+        notes_c: ""
       });
     } else {
       // Create new record
       onMarkAttendance(null, {
-        studentId,
-        date: selectedDate.toISOString(),
-        status,
-        notes: ""
+        student_id_c: studentId,
+        date_c: selectedDate.toISOString(),
+        status_c: status,
+        notes_c: ""
       });
     }
   };
@@ -202,16 +202,16 @@ const AttendanceManager = ({
                 <div className="flex items-center space-x-4">
                   <div className="w-10 h-10 bg-gradient-to-br from-primary-500 to-primary-600 rounded-full flex items-center justify-center">
                     <span className="text-sm font-semibold text-white">
-                      {student.firstName[0]}{student.lastName[0]}
+{student.first_name_c[0]}{student.last_name_c[0]}
                     </span>
                   </div>
                   
                   <div>
-                    <h4 className="font-medium text-slate-900">
-                      {student.firstName} {student.lastName}
+<h4 className="font-medium text-slate-900">
+                      {student.first_name_c} {student.last_name_c}
                     </h4>
-                    <p className="text-sm text-slate-500">
-                      {student.studentId} • Grade {student.gradeLevel} - {student.section}
+<p className="text-sm text-slate-500">
+                      {student.student_id_c} • Grade {student.grade_level_c} - {student.section_c}
                     </p>
                   </div>
                   
